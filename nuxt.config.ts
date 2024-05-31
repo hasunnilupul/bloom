@@ -13,7 +13,15 @@ export default defineNuxtConfig({
     auth: {
       enabled: true,
       // enables the sessionCookie
-      sessionCookie: true
+      sessionCookie: true,
+    },
+  },
+  runtimeConfig: {
+    app: {
+      PUSHER_APP_KEY: process.env.PUSHER_APP_KEY,
+      PUSHER_APP_CLUSTER: process.env.PUSHER_APP_CLUSTER,
+      PUSHER_AUTH_ENDPOINT: process.env.PUSHER_AUTH_ENDPOINT,
+      PUSHER_AUTH_CHANNEL_ENDPOINT: process.env.PUSHER_AUTH_CHANNEL_ENDPOINT,
     },
   },
 });
