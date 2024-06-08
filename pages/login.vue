@@ -75,7 +75,7 @@
             <!-- Remember me -->
             <UCheckbox
               v-model="rememberMe"
-              :ui="{ label: 'text-xs font-medium' }"
+              :ui="{ label: 'text-xs font-medium'}"
               name="notifications"
               label="Remember me"
             />
@@ -170,9 +170,3 @@ const handleGoogleSignIn = async () => {
     });
 };
 </script>
-
-<style>
-.nuxt-icon--fill {
-  fill: none;
-}
-</style>
