@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["nuxt-vuefire", "@nuxt/ui"],
+  modules: ["nuxt-vuefire", "@nuxt/ui", "nuxt-svgo"],
   vuefire: {
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
@@ -15,6 +15,17 @@ export default defineNuxtConfig({
       // enables the sessionCookie
       sessionCookie: true,
     },
+  },
+  ui: {
+    global: true,
+    icons: ["heroicons"],
+  },
+  svgo: {
+    autoImportPath: "./assets/svg/",
+    componentPrefix: "i",
+  },
+  colorMode: {
+    preference: "light",
   },
   runtimeConfig: {
     app: {
