@@ -1,84 +1,116 @@
+<script setup>
+import { object, string } from "yup";
+import { GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
+
+const auth = useFirebaseAuth();
+const googleAuthProvider = new GoogleAuthProvider();
+
+const validationSchema = object({
+  email: string()
+    .email("Invalid email address")
+    .required("Email address is required"),
+  password: string()
+    .min(8, "Must be at least 8 characters")
+    .required("Password is required"),
+});
+
+const formState = reactive({
+  email: "",
+  password: "",
+});
+const error = ref(null);
+
+const handleOnSubmit = () => {};
+
+const handleGoogleSignIn = async () => {
+  await signInWithPopup(auth, googleAuthProvider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      navigateTo("/");
+    })
+    .catch((reason) => {
+      console.error("Failed signinPopup", reason);
+      error.value = reason;
+    });
+};
+</script>
+
 <template>
   <div
     class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
   >
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img
-        class="mx-auto h-10 w-auto"
-        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-        alt="Your Company"
-      />
+      <!-- Logo -->
+      <i-logo class="mx-auto text-5xl !mb-0" filled="false" />
       <!-- Title -->
       <h2
         class="mt-5 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900"
       >
         Welcome back!
       </h2>
-      <!-- Sub Title -->
-      <p
-        class="mt-2 text-center text-sm font-medium leading-3 tracking-wide text-gray-400"
-      >
-        Please enter your details to get started
-      </p>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-3" action="#" method="POST">
+      <UForm class="space-y-3" :state="formState" :schema="validationSchema" @submit="handleOnSubmit">
         <!-- Email address -->
-        <div>
-          <label
-            for="email"
-            class="block text-sm font-medium leading-6 text-gray-900"
-            >Email address</label
-          >
-          <div class="mt-1">
-            <UInput
-              id="email_address"
-              color="gray"
-              variant="outline"
-              name="email_address"
-              type="email"
-              autocomplete="email_address"
-              required=""
-              placeholder="Enter your email address"
-              class="w-full rounded-md border-0 shadow-sm sm:text-sm sm:leading-6"
-            />
-          </div>
-        </div>
+        <UFormGroup
+          id="email_address"
+          name="email"
+          label="Email address"
+          required
+          v-slot="{ error }"
+        >
+          <UInput
+            v-model="formState.email"
+            color="gray"
+            variant="outline"
+            type="email"
+            autocomplete="email_address"
+            placeholder="johndoe@example.com"
+            class="w-full rounded-md border-0 shadow-sm sm:text-sm sm:leading-6"
+            :trailing-icon="
+              error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined
+            "
+          />
+        </UFormGroup>
 
         <!-- Password -->
-        <div>
-          <div class="flex items-center justify-between">
-            <label
-              for="password"
-              class="block text-sm font-medium leading-6 text-gray-900"
-              >Password</label
-            >
-          </div>
-          <div class="mt-1">
-            <UInput
-              id="password"
-              color="gray"
-              variant="outline"
-              name="password"
-              type="password"
-              autocomplete="password"
-              required=""
-              placeholder="**************"
-              class="w-full rounded-md border-0 shadow-sm sm:text-sm sm:leading-6"
-            />
-          </div>
-        </div>
+        <UFormGroup
+          id="password"
+          name="password"
+          label="Password"
+          required
+          v-slot="{ error }"
+        >
+          <UInput
+            v-model="formState.password"
+            color="gray"
+            variant="outline"
+            type="password"
+            autocomplete="password"
+            class="w-full rounded-md border-0 shadow-sm sm:text-sm sm:leading-6"
+            :trailing-icon="
+              error ? 'i-heroicons-exclamation-triangle-20-solid' : undefined
+            "
+          />
+        </UFormGroup>
 
         <div>
           <div class="flex items-center justify-between">
             <!-- Remember me -->
-            <UCheckbox
-              v-model="rememberMe"
-              :ui="{ label: 'text-xs font-medium'}"
-              name="notifications"
-              label="Remember me"
-            />
+            <UFormGroup id="remember_me" name="remember_me">
+              <UCheckbox
+                v-model="formState.rememberMe"
+                :ui="{ label: 'text-xs font-medium' }"
+                label="Remember me"
+              />
+            </UFormGroup>
             <!-- Forgot password -->
             <div class="text-xs">
               <a
@@ -102,10 +134,10 @@
             Sign in
           </UButton>
         </div>
-      </form>
+      </UForm>
 
       <UDivider
-        label="OR"
+        label="or"
         class="my-3"
         :ui="{ label: 'text-gray dark:text-primary-400' }"
       />
@@ -114,7 +146,7 @@
         <!-- Google signin -->
         <UButton
           block
-          type="submit"
+          type="button"
           color="white"
           variant="solid"
           class="flex justify-center rounded-md text-sm font-semibold leading-6 text-gray-600"
@@ -126,9 +158,10 @@
           </template>
           Sign In with Google
         </UButton>
+
         <!-- Go to Signup -->
         <p class="text-center text-sm font-normal text-gray-400">
-          Already have an account?
+          Not registered yet?
           {{ " " }}
           <NuxtLink
             to="/register"
@@ -141,32 +174,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { GoogleAuthProvider } from "firebase/auth";
-import { signInWithPopup } from "firebase/auth";
-// import IconGoogle from "~/assets/svg/google-logo.svg";
-
-const auth = useFirebaseAuth();
-const googleAuthProvider = new GoogleAuthProvider();
-const error = ref(null);
-
-const rememberMe = ref(false);
-
-const handleGoogleSignIn = async () => {
-  await signInWithPopup(auth, googleAuthProvider)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      // The signed-in user info.
-      const user = result.user;
-      // IdP data available using getAdditionalUserInfo(result)
-      navigateTo("/");
-    })
-    .catch((reason) => {
-      console.error("Failed signinPopup", reason);
-      error.value = reason;
-    });
-};
-</script>

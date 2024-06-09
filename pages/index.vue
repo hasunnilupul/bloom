@@ -1,20 +1,3 @@
-<template>
-  <div>
-    <button type="button" @click="logout()">Logout</button>
-    <br />
-    <div>
-      <input type="text" v-model="inputValue" required />
-      <button type="button" @click="sendMessage()">Send</button>
-    </div>
-    <h1>Event Logs</h1>
-    <ul>
-      <li v-for="log in logs">
-        {{ log.message }}
-      </li>
-    </ul>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import Pusher from "pusher-js";
@@ -74,7 +57,7 @@ const initPusher = () => {
     channelAuthorization: {
       endpoint: runtimeConfig.app.PUSHER_AUTH_CHANNEL_ENDPOINT,
       headers,
-    }
+    },
   });
 };
 
@@ -100,3 +83,20 @@ onUnmounted(() => {
   pusher.value.disconnect();
 });
 </script>
+
+<template>
+  <div>
+    <button type="button" @click="logout()">Logout</button>
+    <br />
+    <div>
+      <input type="text" v-model="inputValue" required />
+      <button type="button" @click="sendMessage()">Send</button>
+    </div>
+    <h1>Event Logs</h1>
+    <ul>
+      <li v-for="log in logs">
+        {{ log.message }}
+      </li>
+    </ul>
+  </div>
+</template>
