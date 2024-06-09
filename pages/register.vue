@@ -3,6 +3,10 @@ import { object, string } from "yup";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 
+definePageMeta({
+  layout: "auth",
+});
+
 const auth = useFirebaseAuth();
 const googleAuthProvider = new GoogleAuthProvider();
 

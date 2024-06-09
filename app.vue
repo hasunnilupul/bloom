@@ -1,7 +1,7 @@
 <template>
-  <main>
+  <NuxtLayout>
     <NuxtPage />
-  </main>
+  </NuxtLayout>
 </template>
 
 <script setup>
@@ -10,7 +10,13 @@ useHead({
     class: "h-full bg-white",
   },
   bodyAttrs: {
-    class: "h-full",
+    class: "h-full scrollbar-light",
   },
 });
 </script>
+
+<style lang="css">
+body {
+  font-family: Nunito Sans, sans-serif;
+}
+</style>

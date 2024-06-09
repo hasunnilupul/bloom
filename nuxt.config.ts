@@ -1,7 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  modules: ["nuxt-vuefire", "@nuxt/ui", "nuxt-svgo"],
+  devtools: { enabled: false },
+  css: ["~/assets/css/main.css"],
+  colorMode: {
+    preference: "light",
+  },
+  modules: ["nuxt-vuefire", "@nuxt/ui", "nuxt-svgo", "@nuxtjs/google-fonts"],
   vuefire: {
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
@@ -24,8 +28,12 @@ export default defineNuxtConfig({
     autoImportPath: "./assets/svg/",
     componentPrefix: "i",
   },
-  colorMode: {
-    preference: "light",
+  googleFonts: {
+    families: {
+      "Nunito+Sans": "200..1000",
+    },
+    display: "swap",
+    overwriting: true,
   },
   runtimeConfig: {
     app: {
