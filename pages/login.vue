@@ -2,6 +2,7 @@
 import { object, string } from "yup";
 import { GoogleAuthProvider } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
+import { ROUTES } from "~/constants";
 
 definePageMeta({
     layout: "auth"
@@ -36,7 +37,7 @@ const handleGoogleSignIn = async () => {
       // The signed-in user info.
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
-      navigateTo("/");
+      navigateTo(ROUTES.HOME, {replace: true});
     })
     .catch((reason) => {
       console.error("Failed signinPopup", reason);

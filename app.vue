@@ -5,6 +5,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: ["auth"],
+});
+
 useHead({
   htmlAttrs: {
     class: "h-full bg-white",

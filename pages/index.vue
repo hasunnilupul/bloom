@@ -1,9 +1,3 @@
-<script setup>
-definePageMeta({
-  middleware: ["auth"],
-});
-</script>
-
 <template>
   <div class="flex flex-col space-y-3">
     <!-- header section -->
